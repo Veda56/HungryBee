@@ -1,0 +1,296 @@
+/* auth.css - Modern Authentication UI for Hungry Bee */
+:root {
+  --primary-orange: #FFA500;
+  --primary-yellow: #FFD700;
+  --primary-green: #E8F5E9; /* light green tint */
+  --bg-cream: #FFFDF8;
+  --text-dark: #333333;
+  --text-muted: #666666;
+  --input-bg: #F9F9F9;
+  --input-border: #E0E0E0;
+  --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.05);
+  --shadow-hover: 0 10px 40px rgba(255, 165, 0, 0.2);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-cream);
+  color: var(--text-dark);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.split-layout {
+  display: flex;
+  width: 100%;
+  max-width: 1100px;
+  height: auto;
+  min-height: 600px;
+  background: white;
+  border-radius: 24px;
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  margin: 40px 20px;
+}
+
+/* Left Section: Brand Panel */
+.brand-panel {
+  flex: 1;
+  background: linear-gradient(135deg, var(--primary-orange), var(--primary-yellow), var(--primary-green));
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px;
+  color: white;
+  overflow: hidden;
+}
+
+/* Honeycomb pattern overlay using SVG as background */
+.honeycomb-pattern {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  /* SVG properly encoded for use in CSS background-image */
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='69' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 17l-20 11.5L0 17V-5.8l20-11.5L40-5.8V17zm0 46.2l-20 11.5L0 63.5V40.4l20-11.5L40 40.4V63.5zM20 52l-20 11.5L-20 52V28.9l20-11.5L20 28.9V52z' fill='rgba(255,255,255,0.1)' fill-rule='evenodd'/%3E%3C/svg%3E");
+  z-index: 1;
+}
+
+.brand-content {
+  position: relative;
+  z-index: 2;
+  background: var(--glass-bg);
+  padding: 40px;
+  border-radius: 24px;
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  color: var(--text-dark);
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.logo-large {
+  font-size: 64px;
+  margin-bottom: 20px;
+  display: inline-block;
+  animation: bounce 3s infinite ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 100% {transform: translateY(0);}
+  50% {transform: translateY(-8px);}
+}
+
+.brand-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  background: linear-gradient(to right, var(--primary-orange), #ff8c00);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent; /* required for Webkit/Chrome gradient text */
+  color: transparent; /* fallback for non-Webkit browsers */
+}
+
+.brand-tagline {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+/* Right Section: Form Panel */
+.form-panel {
+  flex: 1;
+  padding: 50px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: white;
+  overflow-y: auto;
+}
+
+.form-header {
+  margin-bottom: 40px;
+}
+
+.form-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.form-header p {
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.input-group {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.input-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-dark);
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 18px;
+  color: #a0a0a0;
+  font-size: 16px;
+  z-index: 1;
+  transition: color 0.3s ease;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 16px;
+  color: #a0a0a0;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 1;
+  background: none;
+  border: none;
+  padding: 5px;
+}
+
+.toggle-password:hover {
+  color: var(--text-dark);
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 14px 45px;
+  border: 2px solid var(--input-border);
+  border-radius: 50px;
+  font-size: 15px;
+  background-color: var(--input-bg);
+  transition: all 0.3s ease;
+  font-family: inherit;
+  outline: none;
+}
+
+.input-wrapper input:focus {
+  border-color: var(--primary-orange);
+  background-color: white;
+  box-shadow: 0 0 0 4px rgba(255, 165, 0, 0.1);
+}
+
+/* Icon color on focus is handled via JavaScript since CSS cannot target
+   a preceding sibling element (.input-icon is before input in DOM) */
+.input-wrapper:focus-within .input-icon {
+  color: var(--primary-orange);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+  margin-top: -10px;
+}
+
+.forgot-password {
+  color: var(--primary-orange);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+.forgot-password:hover {
+  color: #e69500;
+  text-decoration: underline;
+}
+
+.primary-btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(135deg, var(--primary-orange), var(--primary-yellow));
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.form-footer {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+.form-footer a {
+  color: var(--primary-orange);
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile responsive */
+@media (max-width: 860px) {
+  .split-layout {
+    flex-direction: column;
+    margin: 0;
+    border-radius: 0;
+    min-height: 100vh;
+  }
+  
+  .brand-panel {
+    padding: 40px 20px;
+    flex: 0 0 auto;
+  }
+
+  .form-panel {
+    padding: 40px 30px;
+    flex: 1;
+    border-radius: 24px 24px 0 0;
+    margin-top: -20px;
+    position: relative;
+    z-index: 3;
+  }
+  
+  .logo-large {
+    font-size: 48px;
+  }
+}
