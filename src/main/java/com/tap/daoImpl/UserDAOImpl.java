@@ -10,7 +10,7 @@ import java.util.List;
 import com.tap.dao.UserDAO;
 import com.tap.model.User;
 import com.tap.utility.DBConnection;
-import com.tap.utility.PasswordUtil;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class UserDAOImpl implements UserDAO {
 
@@ -191,15 +191,15 @@ public class UserDAOImpl implements UserDAO {
         if (user != null) {
             String dbPassword = user.getPassword();
             if (dbPassword != null) {
-                String hashedInput = PasswordUtil.hashPassword(password);
+                boolean isMatch = false;
+                try {
+                    isMatch = BCrypt.checkpw(password, dbPassword);
+                } catch (Exception e) {
+                    // Fallback for legacy plain-text or previous hashing mechanism
+                    isMatch = dbPassword.equals(password);
+                }
                 
-                // 1. Check exact hash match
-                // 2. Check plain-text match (legacy users)
-                // 3. Check truncated hash match (if DB column length is < 64)
-                if (dbPassword.equals(hashedInput) || 
-                    dbPassword.equals(password) || 
-                    (dbPassword.length() < 64 && hashedInput.startsWith(dbPassword))) {
-                    
+                if (isMatch) {
                     return user;
                 }
             }

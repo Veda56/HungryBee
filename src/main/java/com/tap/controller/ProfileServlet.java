@@ -18,7 +18,7 @@ import com.tap.daoImpl.RestaurantDAOImpl;
 import com.tap.daoImpl.UserDAOImpl;
 import com.tap.model.OrderTable;
 import com.tap.model.User;
-import com.tap.utility.PasswordUtil;
+import org.mindrot.jbcrypt.BCrypt;
 
 @WebServlet("/profile")
 public class ProfileServlet extends HttpServlet {
@@ -88,7 +88,7 @@ public class ProfileServlet extends HttpServlet {
                     doGet(request, response);
                     return;
                 }
-                user.setPassword(PasswordUtil.hashPassword(newPwd));
+                user.setPassword(BCrypt.hashpw(newPwd, BCrypt.gensalt()));
             }
 
             boolean updated = userDAO.updateUser(user);

@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import com.tap.dao.UserDAO;
 import com.tap.daoImpl.UserDAOImpl;
 import com.tap.model.User;
-import com.tap.utility.PasswordUtil;
+import org.mindrot.jbcrypt.BCrypt;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
@@ -68,7 +68,7 @@ public class RegisterServlet extends HttpServlet {
             }
 
             Timestamp currentDate = new Timestamp(System.currentTimeMillis());
-            String hashedPassword = PasswordUtil.hashPassword(password);
+            String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
             String address = (phone != null && !phone.trim().isEmpty()) ? phone.trim() : "";
 
             User user = new User(
