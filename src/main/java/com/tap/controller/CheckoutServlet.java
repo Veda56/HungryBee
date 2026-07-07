@@ -96,9 +96,15 @@ public class CheckoutServlet extends HttpServlet {
             subtotal = subtotal.add(item.getSubtotal());
         }
         BigDecimal deliveryFee = new BigDecimal("40.00");
+        
+        String coupon = request.getParameter("coupon");
+        if ("FREEDELIVERY".equalsIgnoreCase(coupon)) {
+            deliveryFee = BigDecimal.ZERO;
+        }
+        
         BigDecimal taxes       = subtotal.multiply(new BigDecimal("0.05")).setScale(2, java.math.RoundingMode.HALF_UP);
         BigDecimal grandTotal  = subtotal.add(deliveryFee).add(taxes);
-
+        
         try {
             OrderDAOImpl orderDAO        = new OrderDAOImpl();
             OrderItemDAOImpl orderItemDAO = new OrderItemDAOImpl();
@@ -110,7 +116,7 @@ public class CheckoutServlet extends HttpServlet {
                 new Timestamp(System.currentTimeMillis()),
                 grandTotal,
                 "Pending",
-                paymentMethod != null ? paymentMethod : "Cash on Delivery"
+                paymentMethod != null ? paymentMethod : "Cash"
             );
             int orderId = orderDAO.addOrder(order);
 

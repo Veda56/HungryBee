@@ -15,29 +15,29 @@ import com.tap.utility.DBConnection;
 public class OrderDAOImpl implements OrderDAO {
 
     private static final String INSERT_ORDER =
-            "INSERT INTO Orders(UserID, RestaurantID, OrderDate, TotalAmount, Status, PaymentMethod) "
+            "INSERT INTO ordertable(UserID, RestaurantID, OrderDate, TotalAmount, Status, PaymentMethod) "
             + "VALUES(?,?,?,?,?,?)";
 
     private static final String GET_ORDER_BY_ID =
-            "SELECT * FROM Orders WHERE OrderID=?";
+            "SELECT * FROM ordertable WHERE OrderID=?";
 
     private static final String GET_ALL_ORDERS =
-            "SELECT * FROM Orders";
+            "SELECT * FROM ordertable";
 
     private static final String GET_ORDERS_BY_USER_ID =
-            "SELECT * FROM Orders WHERE UserID=? ORDER BY OrderDate DESC";
+            "SELECT * FROM ordertable WHERE UserID=? ORDER BY OrderDate DESC";
 
     private static final String GET_ORDERS_BY_RESTAURANT_ID =
-            "SELECT * FROM Orders WHERE RestaurantID=? ORDER BY OrderDate DESC";
+            "SELECT * FROM ordertable WHERE RestaurantID=? ORDER BY OrderDate DESC";
 
     private static final String UPDATE_ORDER_STATUS =
-            "UPDATE Orders SET Status=? WHERE OrderID=?";
+            "UPDATE ordertable SET Status=? WHERE OrderID=?";
 
     private static final String UPDATE_PAYMENT_METHOD =
-            "UPDATE Orders SET PaymentMethod=? WHERE OrderID=?";
+            "UPDATE ordertable SET PaymentMethod=? WHERE OrderID=?";
 
     private static final String DELETE_ORDER =
-            "DELETE FROM Orders WHERE OrderID=?";
+            "DELETE FROM ordertable WHERE OrderID=?";
 
     @Override
     public int addOrder(OrderTable order) {

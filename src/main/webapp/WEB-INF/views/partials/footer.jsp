@@ -55,3 +55,34 @@
         </div>
     </div>
 </footer>
+
+<!-- SweetAlert2 for beautiful popups -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+    .emotional-bee {
+        font-size: 3.5rem;
+        display: inline-block;
+        margin-bottom: 5px;
+        filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+    }
+</style>
+<script>
+    function confirmLogout(event, url) {
+        event.preventDefault(); // Stop default navigation
+        Swal.fire({
+            title: 'Leaving the hive?',
+            html: '<div class="emotional-bee" id="beeEmoji">🥺</div><br><span style="font-size: 1.1rem; color: #64748b;">The hive feels so empty without you... Are you sure you want to fly away?</span>',
+            showCancelButton: true,
+            confirmButtonColor: '#e74c3c', // Red for logout
+            cancelButtonColor: '#f59e0b', // Yellow/Honey color for staying
+            confirmButtonText: 'Yes, let me fly away!',
+            cancelButtonText: 'No, I want to stay 💛',
+            reverseButtons: true // Puts the primary action (staying) on the right
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+        return false;
+    }
+</script>

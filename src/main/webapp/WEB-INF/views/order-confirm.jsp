@@ -105,6 +105,19 @@
 <script>
   const nb = document.getElementById('mainNavbar');
   if (nb) window.addEventListener('scroll', () => nb.classList.toggle('scrolled', scrollY > 10));
+
+  <% if (order != null) { %>
+  // Show success popup only when order is successfully confirmed by backend
+  document.addEventListener('DOMContentLoaded', function() {
+      Swal.fire({
+          title: 'Order Placed Successfully! 🎉',
+          text: 'Your delicious food is being prepared 😋',
+          icon: 'success',
+          confirmButtonColor: '#10b981', // green for success
+          confirmButtonText: 'Awesome!'
+      });
+  });
+  <% } %>
 </script>
 </body>
 </html>

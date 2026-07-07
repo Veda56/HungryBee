@@ -53,7 +53,10 @@
 
   <div class="checkout-layout">
     <div>
-      <form action="${pageContext.request.contextPath}/checkout" method="post">
+      <form id="checkoutForm" action="${pageContext.request.contextPath}/checkout" method="post">
+        <!-- Hidden input to pass coupon to backend -->
+        <input type="hidden" id="appliedCoupon" name="coupon" value="">
+        
         <div class="checkout-form-card">
           <div class="cf-section-title"><i class="fa-solid fa-location-dot"></i> Delivery Details</div>
           <div class="form-row">
@@ -77,7 +80,7 @@
           <div class="cf-section-title"><i class="fa-solid fa-wallet"></i> Payment Method</div>
           <div class="payment-options">
             <label class="payment-option">
-              <input type="radio" name="paymentMethod" value="Cash on Delivery" checked>
+              <input type="radio" name="paymentMethod" value="Cash" checked>
               <span class="po-icon">💵</span>
               <div>
                 <div class="po-label">Cash on Delivery</div>
@@ -93,7 +96,7 @@
               </div>
             </label>
             <label class="payment-option">
-              <input type="radio" name="paymentMethod" value="Credit/Debit Card">
+              <input type="radio" name="paymentMethod" value="Card">
               <span class="po-icon">💳</span>
               <div>
                 <div class="po-label">Credit / Debit Card</div>
@@ -121,12 +124,76 @@
          } %>
       <hr class="os-divider">
       <div class="os-row"><span>Subtotal</span><span class="os-val">₹<%= subtotal %></span></div>
-      <div class="os-row"><span>Delivery Fee</span><span class="os-val">₹<%= deliveryFee %></span></div>
+      <div class="os-row" id="deliveryFeeRow">
+        <span>Delivery Fee</span>
+        <span class="os-val" id="deliveryFeeDisplay">₹<%= deliveryFee %></span>
+      </div>
       <div class="os-row"><span>Taxes (5%)</span><span class="os-val">₹<%= taxes %></span></div>
-      <div class="os-row total"><span>Total</span><span class="os-val">₹<%= grandTotal %></span></div>
+      <div class="os-row total"><span>Total</span><span class="os-val" id="grandTotalDisplay">₹<%= grandTotal %></span></div>
+      
+      <!-- Coupon Section -->
+      <div class="coupon-section" style="margin-top: 20px; padding-top: 20px; border-top: 1px dashed #cbd5e1;">
+        <label for="couponCode" style="display: block; font-weight: 600; font-size: 0.9rem; color: #334155; margin-bottom: 8px;">Have a Coupon?</label>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="couponCode" placeholder="Enter FREEDELIVERY" style="flex: 1; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 8px; text-transform: uppercase;">
+          <button type="button" id="applyCouponBtn" class="btn btn-outline" style="padding: 10px 16px;">Apply</button>
+        </div>
+        <div id="couponMsg" style="margin-top: 8px; font-size: 0.85rem; font-weight: 500;"></div>
+      </div>
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const applyBtn = document.getElementById('applyCouponBtn');
+    const couponInput = document.getElementById('couponCode');
+    const msgDiv = document.getElementById('couponMsg');
+    const deliveryDisplay = document.getElementById('deliveryFeeDisplay');
+    const grandTotalDisplay = document.getElementById('grandTotalDisplay');
+    const submitBtn = document.querySelector('button[type="submit"]');
+    const hiddenCouponInput = document.getElementById('appliedCoupon');
+    
+    // Store original values (passed from JSP)
+    const originalDeliveryFee = <%= deliveryFee %>;
+    const originalGrandTotal = <%= grandTotal %>;
+    let isCouponApplied = false;
+
+    applyBtn.addEventListener('click', function() {
+      const code = couponInput.value.trim().toUpperCase();
+      
+      if (code === 'FREEDELIVERY') {
+        if (!isCouponApplied) {
+          isCouponApplied = true;
+          hiddenCouponInput.value = 'FREEDELIVERY';
+          
+          // Update UI
+          deliveryDisplay.innerHTML = `<span style="text-decoration: line-through; color: #94a3b8; margin-right: 8px;">₹${originalDeliveryFee}</span><span style="color: #10b981;">FREE</span>`;
+          const newTotal = (originalGrandTotal - originalDeliveryFee).toFixed(2);
+          grandTotalDisplay.innerText = '₹' + newTotal;
+          
+          // Update main button text
+          submitBtn.innerHTML = `<i class="fa-solid fa-check"></i> Place Order — ₹${newTotal}`;
+          
+          // Show success msg
+          msgDiv.style.color = '#10b981';
+          msgDiv.innerText = '✨ Free delivery applied!';
+          
+          // Disable input
+          couponInput.disabled = true;
+          applyBtn.innerText = 'Applied';
+          applyBtn.disabled = true;
+        }
+      } else if (code === '') {
+        msgDiv.style.color = '#ef4444';
+        msgDiv.innerText = 'Please enter a coupon code.';
+      } else {
+        msgDiv.style.color = '#ef4444';
+        msgDiv.innerText = 'Invalid coupon code. Try FREEDELIVERY.';
+      }
+    });
+  });
+</script>
 
 <%@ include file="partials/footer.jsp" %>
 

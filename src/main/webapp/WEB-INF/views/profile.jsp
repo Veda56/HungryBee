@@ -88,7 +88,7 @@
         <a href="${pageContext.request.contextPath}/cart" class="profile-nav-item">
           <i class="fa-solid fa-cart-shopping"></i> My Cart
         </a>
-        <a href="${pageContext.request.contextPath}/logout" class="profile-nav-item" style="color: #e74c3c;">
+        <a href="${pageContext.request.contextPath}/logout" class="profile-nav-item" style="color: #e74c3c;" onclick="return confirmLogout(event, this.href);">
           <i class="fa-solid fa-right-from-bracket"></i> Logout
         </a>
       </nav>

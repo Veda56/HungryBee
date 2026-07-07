@@ -61,7 +61,7 @@
         <span class="user-name"><%= displayName %></span>
     </a>
 
-    <a href="${pageContext.request.contextPath}/logout" id="navLogout">
+    <a href="${pageContext.request.contextPath}/logout" id="navLogout" onclick="return confirmLogout(event, this.href);">
         <button type="button" class="btn-logout">
             <i class="fa-solid fa-right-from-bracket"></i> Logout
         </button>
