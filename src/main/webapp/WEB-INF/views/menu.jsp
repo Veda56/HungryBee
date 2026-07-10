@@ -165,15 +165,16 @@
               String emoji = foodEmojis[emojiIdx % foodEmojis.length];
               emojiIdx++;
               String catLower = m.getCategory() != null ? m.getCategory().toLowerCase() : "";
-              if (catLower.contains("pizza")) emoji = "🍕";
-              else if (catLower.contains("burger")) emoji = "🍔";
-              else if (catLower.contains("sushi")) emoji = "🍣";
-              else if (catLower.contains("chinese") || catLower.contains("noodle")) emoji = "🍜";
-              else if (catLower.contains("indian") || catLower.contains("curry")) emoji = "🍛";
-              else if (catLower.contains("dessert") || catLower.contains("cake") || catLower.contains("sweet")) emoji = "🍰";
-              else if (catLower.contains("pasta") || catLower.contains("italian")) emoji = "🍝";
-              else if (catLower.contains("salad")) emoji = "🥗";
-              else if (catLower.contains("chicken")) emoji = "🍗";
+              String nameLower = m.getItemName() != null ? m.getItemName().toLowerCase() : "";
+              if (catLower.contains("pizza") || nameLower.contains("pizza")) emoji = "🍕";
+              else if (catLower.contains("burger") || nameLower.contains("burger")) emoji = "🍔";
+              else if (catLower.contains("sushi") || nameLower.contains("sushi")) emoji = "🍣";
+              else if (catLower.contains("chinese") || catLower.contains("noodle") || nameLower.contains("noodle")) emoji = "🍜";
+              else if (catLower.contains("indian") || catLower.contains("curry") || nameLower.contains("curry")) emoji = "🍛";
+              else if (catLower.contains("dessert") || catLower.contains("cake") || catLower.contains("sweet") || nameLower.contains("cake") || nameLower.contains("dessert")) emoji = "🍰";
+              else if (catLower.contains("pasta") || catLower.contains("italian") || nameLower.contains("pasta")) emoji = "🍝";
+              else if (catLower.contains("salad") || nameLower.contains("salad")) emoji = "🥗";
+              else if (catLower.contains("chicken") || nameLower.contains("chicken")) emoji = "🍗";
         %>
         <%
           String finalImageUrl = m.getImageUrl();
@@ -235,23 +236,28 @@
   const nb = document.getElementById('mainNavbar');
   if (nb) window.addEventListener('scroll', () => nb.classList.toggle('scrolled', scrollY > 10));
 
-  // ── Live search ──
-  document.getElementById('menuSearch').addEventListener('input', function() {
-    const q = this.value.toLowerCase().trim();
+  // ── Unified filter function ──
+  function filterMenu() {
+    const q = document.getElementById('menuSearch').value.toLowerCase().trim();
+    const activeChip = document.querySelector('.cat-chip.active');
+    const cat = activeChip ? activeChip.dataset.cat : 'all';
+
     document.querySelectorAll('.menu-card').forEach(c => {
-      c.style.display = (!q || c.dataset.name.includes(q)) ? '' : 'none';
+      const matchesSearch = (!q || c.dataset.name.includes(q));
+      const matchesCat = (cat === 'all' || c.dataset.cat.includes(cat) || c.dataset.name.includes(cat));
+      c.style.display = (matchesSearch && matchesCat) ? '' : 'none';
     });
-  });
+  }
+
+  // ── Live search ──
+  document.getElementById('menuSearch').addEventListener('input', filterMenu);
 
   // ── Category chip filter ──
   document.querySelectorAll('.cat-chip').forEach(chip => {
     chip.addEventListener('click', function() {
       document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
       this.classList.add('active');
-      const cat = this.dataset.cat;
-      document.querySelectorAll('.menu-card').forEach(c => {
-        c.style.display = (cat === 'all' || c.dataset.cat.includes(cat)) ? '' : 'none';
-      });
+      filterMenu();
     });
   });
 

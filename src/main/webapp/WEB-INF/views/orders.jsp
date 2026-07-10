@@ -100,7 +100,7 @@
         <div class="oc-method">
           <i class="fa-solid fa-wallet"></i> <%= o.getPaymentMethod() %>
         </div>
-        <a href="${pageContext.request.contextPath}/order-confirm?orderId=<%= o.getOrderId() %>" class="btn btn-outline btn-sm">
+        <a href="${pageContext.request.contextPath}/order-confirm?orderId=<%= o.getOrderId() %>" class="btn btn-outline btn-sm view-details-btn">
           View Details
         </a>
       </div>
@@ -115,6 +115,98 @@
 <script>
   const nb = document.getElementById('mainNavbar');
   if (nb) window.addEventListener('scroll', () => nb.classList.toggle('scrolled', scrollY > 10));
+
+  // Add realistic bee flight keyframes
+  const style = document.createElement('style');
+  style.innerHTML = `
+    @keyframes realistic-bee-flight {
+      0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+        opacity: 1;
+      }
+      20% {
+        transform: translate(-40px, -60px) scale(1.2) rotate(-15deg);
+      }
+      40% {
+        transform: translate(-120px, -40px) scale(1.5) rotate(-5deg);
+      }
+      60% {
+        transform: translate(-250px, -150px) scale(1.8) rotate(-25deg);
+      }
+      80% {
+        transform: translate(-400px, -100px) scale(2.2) rotate(-10deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-600px, -300px) scale(3) rotate(-30deg);
+        opacity: 0;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Bee fly animation on View Details click
+  document.querySelectorAll('.view-details-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const url = this.href;
+
+      // Create a transition overlay to make it look like it's redirecting
+      const overlay = document.createElement('div');
+      overlay.style.position = 'fixed';
+      overlay.style.inset = '0';
+      overlay.style.backgroundColor = 'rgba(255, 253, 248, 0.85)';
+      overlay.style.backdropFilter = 'blur(5px)';
+      overlay.style.zIndex = '999998';
+      overlay.style.display = 'flex';
+      overlay.style.alignItems = 'center';
+      overlay.style.justifyContent = 'center';
+      overlay.style.opacity = '0';
+      overlay.style.transition = 'opacity 0.4s ease';
+
+      const loadingText = document.createElement('h2');
+      loadingText.innerText = 'Buzzing to your order details... 🐝';
+      loadingText.style.color = 'var(--primary, #FFA500)';
+      loadingText.style.fontFamily = 'Inter, sans-serif';
+      loadingText.style.fontSize = '24px';
+      loadingText.style.fontWeight = '800';
+      
+      overlay.appendChild(loadingText);
+      document.body.appendChild(overlay);
+
+      // Fade in the overlay
+      setTimeout(() => overlay.style.opacity = '1', 10);
+
+      // Create bee element for the flight
+      const bee = document.createElement('div');
+      bee.innerText = '🐝';
+      bee.style.position = 'fixed';
+      bee.style.fontSize = '32px';
+      // Ensure it renders above the overlay
+      bee.style.zIndex = '999999';
+      bee.style.pointerEvents = 'none';
+
+      // Start position at the center of the button
+      const rect = this.getBoundingClientRect();
+      bee.style.left = (rect.left + rect.width / 2 - 16) + 'px';
+      bee.style.top = (rect.top + rect.height / 2 - 16) + 'px';
+      
+      // Apply the realistic flight animation
+      bee.style.animation = 'realistic-bee-flight 1.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards';
+
+      document.body.appendChild(bee);
+
+      // Redirect after animation finishes
+      setTimeout(() => {
+        // Fade out the whole body right before navigating for a smooth transition
+        document.body.style.transition = 'opacity 0.2s ease';
+        document.body.style.opacity = '0';
+        setTimeout(() => {
+            window.location.href = url;
+        }, 200);
+      }, 1300);
+    });
+  });
 </script>
 </body>
 </html>

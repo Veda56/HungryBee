@@ -173,7 +173,7 @@ public class OrderDAOImpl implements OrderDAO {
             pstmt.setString(1, status);
             pstmt.setInt(2, orderId);
 
-            isUpdated = pstmt.executeUpdate() > 0;
+            isUpdated = pstmt.executeUpdate() >= 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -194,7 +194,7 @@ public class OrderDAOImpl implements OrderDAO {
             pstmt.setString(1, paymentMethod);
             pstmt.setInt(2, orderId);
 
-            isUpdated = pstmt.executeUpdate() > 0;
+            isUpdated = pstmt.executeUpdate() >= 0;
 
         } catch (SQLException e) {
             e.printStackTrace();

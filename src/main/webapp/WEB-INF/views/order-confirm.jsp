@@ -106,8 +106,8 @@
   const nb = document.getElementById('mainNavbar');
   if (nb) window.addEventListener('scroll', () => nb.classList.toggle('scrolled', scrollY > 10));
 
-  <% if (order != null) { %>
-  // Show success popup only when order is successfully confirmed by backend
+  <% if (order != null && "true".equals(request.getParameter("new"))) { %>
+  // Show success popup only when a new order is successfully placed
   document.addEventListener('DOMContentLoaded', function() {
       Swal.fire({
           title: 'Order Placed Successfully! 🎉',

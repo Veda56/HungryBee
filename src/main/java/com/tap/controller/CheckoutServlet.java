@@ -136,7 +136,7 @@ public class CheckoutServlet extends HttpServlet {
                 session.removeAttribute("cart");
                 session.setAttribute("user", user);
 
-                response.sendRedirect(request.getContextPath() + "/order-confirm?orderId=" + orderId);
+                response.sendRedirect(request.getContextPath() + "/order-confirm?orderId=" + orderId + "&new=true");
             } else {
                 request.setAttribute("error", "Failed to place order. Please try again.");
                 doGet(request, response);

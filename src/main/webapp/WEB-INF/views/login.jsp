@@ -52,8 +52,8 @@
                     <div class="input-wrapper">
                         <i class="fa-solid fa-lock input-icon"></i>
                         <input type="password" id="password" name="password" placeholder="••••••••" required>
-                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('password', this)" aria-label="Toggle Password Visibility">
-                            <i class="fa-regular fa-eye"></i>
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('password', this)" aria-label="Toggle Password Visibility" style="background: none; border: none; cursor: pointer; padding: 0 10px;">
+                            <span class="bee-eye" style="font-size: 1.4rem;">🙈</span>
                         </button>
                     </div>
                 </div>
@@ -74,15 +74,13 @@
     <script>
         function togglePasswordVisibility(inputId, button) {
             const input = document.getElementById(inputId);
-            const icon = button.querySelector('i');
+            const beeIcon = button.querySelector('.bee-eye');
             if (input.type === 'password') {
                 input.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
+                if (beeIcon) beeIcon.innerText = '🐵';
             } else {
                 input.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
+                if (beeIcon) beeIcon.innerText = '🙈';
             }
         }
     </script>
